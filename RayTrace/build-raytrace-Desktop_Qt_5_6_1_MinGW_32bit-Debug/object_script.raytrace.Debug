@@ -25,6 +25,7 @@ INPUT(
 ./tmp\Plano.o
 ./tmp\Luz.o
 ./tmp\Cilindro.o
+./tmp\Cone.o
 ./tmp\qrc_raytrace.o
 ./tmp\moc_Trab3FT.o
 ./tmp\moc_PlyParser.o

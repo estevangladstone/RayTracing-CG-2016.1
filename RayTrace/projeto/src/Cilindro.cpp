@@ -9,7 +9,6 @@ Cilindro::Cilindro(int _indice_textura, float _raio, float _altura, const Ponto_
 }
 
 
-//Foley capítulo 15.10, fórmula 15.17
 Intersection Cilindro::Intercepta(const Raio& r_vis, IntersectionMode mode, float threshold)
 {
   float a, b, c, delta, hmin, hmax, t1, t2, y1, y2;
