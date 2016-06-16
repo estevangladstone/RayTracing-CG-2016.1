@@ -54,9 +54,10 @@ Intersection Cilindro::Intercepta(const Raio& r_vis, IntersectionMode mode, floa
 
 Vetor_3D Cilindro::normal( const Ponto_3D& ponto ) const
 {
-    Vetor_3D tmp;
+    Vetor_3D tmp(ponto - centro);
+    Vetor_3D centroNaAlturaDoPonto =  Vetor_3D(centro.X(), ponto.Y(), centro.Z());
 
-    tmp = ponto - centro;
+    tmp = ponto - centroNaAlturaDoPonto;
     tmp.normaliza();
 
     return tmp;
