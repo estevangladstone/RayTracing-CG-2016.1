@@ -1,4 +1,4 @@
-#include "Cilindro.h"
+#include "cilindro.h"
 #include <cmath>
 
 Cilindro::Cilindro(int _indice_textura, float _raio, float _altura, const Ponto_3D& _centro) : Objeto_3D ( _indice_textura )
