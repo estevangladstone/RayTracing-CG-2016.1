@@ -22,7 +22,7 @@ Intersection Cone::Intercepta(const Raio& r_vis, IntersectionMode mode, float th
   //calculo dos limites superior e inferior do Cone
   hmin = centro.Y()-(altura/2);
   hmax = centro.Y()+(altura/2);
-  h = r_vis.X0() - hmin;
+  h = r_vis.Y0() - hmin;
   tg = raio/altura;
 
   // montando a equação do 2º grau at2 + bt + c = 0
