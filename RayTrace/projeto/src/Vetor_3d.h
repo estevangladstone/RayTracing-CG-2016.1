@@ -46,6 +46,8 @@ class Vetor_3D{
     Vetor_3D reflect(Vetor_3D incidet)const{
         return incidet - operator*(2*( produtoEscalar(incidet) ));
     }
+
+    Vetor_3D produtoVetorial(const Vetor_3D& outro)const;
 };
 
 #endif // VETOR_3D_H

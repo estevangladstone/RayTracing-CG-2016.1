@@ -25,3 +25,9 @@ float Vetor_3D::produtoEscalar(const Vetor_3D& outro)const
 {
   return ( x*outro.X() +  y*outro.Y() + z*outro.Z() );
 }
+
+//produto vetorial de dois vetores
+Vetor_3D Vetor_3D::produtoVetorial(const Vetor_3D& outro)const
+{
+  return Vetor_3D(y*outro.Z() - outro.Y()*z, z*outro.X() - outro.Z()*x, x*outro.Y() - outro.X()*y);
+}
