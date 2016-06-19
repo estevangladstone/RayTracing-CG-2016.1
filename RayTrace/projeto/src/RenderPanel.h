@@ -1,7 +1,7 @@
 #ifndef RENDERPANEL_H
 #define RENDERPANEL_H
 
-#include <QtWidgets>
+#include <QtGui>
 #include <Render.h>
 
 class RenderPanel : public QWidget
