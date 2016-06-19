@@ -64,13 +64,40 @@ Vetor_3D Cilindro::normal( const Ponto_3D& ponto ) const
 
 TexturePoint Cilindro::pontoTextura(const Ponto_3D& ponto) const
 {
-    float phi, theta;
+    float u, v, c;
+    float hmin=centro.Y()-altura/2;
+    float hmax=centro.Y()+altura/2;
     Vetor_3D tmp(ponto - centro);
+    float angulo = atanf(tmp.Z()/tmp.X());
 
     tmp.normaliza();
 
-    phi  = acosf(tmp.Z());
-    theta = tmp.Y();
 
-    return TexturePoint((phi/M_PI), theta);
+
+    //u  = (acosf((tmp.X()/raio)-angulo))/(2*M_PI);
+    //    phi  = acosf(tmp.Y());
+    //    theta = acosf(tmp.X()/sin(phi));
+    c=raio*angulo;
+    u = c/(2*M_PI*raio);
+    v = (tmp.Y()-hmin)/altura;
+
+    return TexturePoint(u, v);
+
+
+//    float phi, theta;
+//    Vetor_3D tmp(ponto - centro);
+
+//    tmp.normaliza();
+
+//    phi  = acosf(tmp.Y());
+//    theta = acosf(tmp.X()/sin(phi));
+
+//    return TexturePoint((phi/M_PI), ((theta)/M_PI));
+
+
+
+//    float hmin=centro.Y()-altura/2;
+//    float hmax=centro.Y()+altura/2;
+//    return TexturePoint( (ponto.Y()-hmin)/(altura) ,
+//                         (ponto.Z()-hmin)/(altura) );
 }
