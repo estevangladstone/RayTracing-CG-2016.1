@@ -61,10 +61,13 @@ Vetor_3D Cone::normal( const Ponto_3D& ponto ) const
 
     tmp = ponto - centroNaAlturaDoPonto;
 
-//    k = tmp.produtoVetorial(centroNaAlturaDoPonto);
-//    k.normaliza();
+    if(centroNaAlturaDoPonto.Y() < 0){
+        centroNaAlturaDoPonto.setY(-centroNaAlturaDoPonto.Y());
+    }
+    k = tmp.produtoVetorial(centroNaAlturaDoPonto);
+    k.normaliza();
 
-//    tmp = tmp*cos(angulo) + (k.produtoVetorial(tmp))*sin(angulo) + k*(k.produtoEscalar(tmp))*(1 - cos(-angulo));
+    tmp = tmp*cos(angulo) + (k.produtoVetorial(tmp))*sin(angulo) + k*(k.produtoEscalar(tmp))*(1 - cos(angulo));
     tmp.normaliza();
 
     return tmp;
@@ -72,13 +75,48 @@ Vetor_3D Cone::normal( const Ponto_3D& ponto ) const
 
 TexturePoint Cone::pontoTextura(const Ponto_3D& ponto) const
 {
-    float phi, theta;
-    Vetor_3D tmp(ponto - centro);
+    double u, v, a, b, raioCone, h;
 
-    tmp.normaliza();
+    a = 0;
+    b = M_PI;
 
-    phi  = acosf(tmp.Z());
-    theta = tmp.Y();
+    u = 1 - (acosf((ponto.X() - centro.X()) / (raio) - a)/(b - a));
+    v = 1 - ((ponto.Y() - (centro.Y() - (altura/2))) / altura);
 
-    return TexturePoint((phi/M_PI), theta);
+    return TexturePoint(u, v);
+
+    //    float u, v, c;
+//        float hmin=centro.Y()-altura/2;
+//        float hmax=centro.Y()+altura/2;
+//        Vetor_3D tmp(ponto - centro);
+//        float angulo = atanf(tmp.Z()/fabs(tmp.X()));
+
+//        tmp.normaliza();
+
+//        //u  = (acosf((tmp.X()/raio)-angulo))/(2*M_PI);
+//        //    phi  = acosf(tmp.Y());
+//        //    theta = acosf(tmp.X()/sin(phi));
+//        c=raio*angulo;
+//        u = c/(2*M_PI*raio);
+//        v = (tmp.Y()-hmin)/altura;
+
+//        return TexturePoint(u, v);
+
+
+    //    float phi, theta;
+    //    Vetor_3D tmp(ponto - centro);
+
+    //    tmp.normaliza();
+
+    //    phi  = acosf(tmp.Y());
+    //    theta = acosf(tmp.X()/sin(phi));
+
+    //    return TexturePoint((phi/M_PI), ((theta)/M_PI));
+
+
+
+    //    float hmin=centro.Y()-altura/2;
+    //    float hmax=centro.Y()+altura/2;
+    //    return TexturePoint( (ponto.Y()-hmin)/(altura) ,
+    //                         (ponto.Z()-hmin)/(altura) );
 }
