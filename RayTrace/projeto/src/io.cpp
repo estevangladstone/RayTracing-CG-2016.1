@@ -15,6 +15,7 @@
 #include "TriangleMesh.h"
 #include "cilindro.h"
 #include "cone.h"
+#include "Torus.h"
 
 bool LeArquivo( Cenario * hcenario, Camara * hcamara, int hlinhas, int hcolunas, const QString& filename)
 {
@@ -75,6 +76,8 @@ tok Token(const QString& linha)
 
     if(linha == "#CONE") return tok_CONE;
 
+    if(linha == "#TORUS") return tok_TORUS;
+
     if(linha == "#LIGHT") return tok_LIGHT;
 
     if(linha == "#SIZE") return tok_SIZE;
@@ -110,6 +113,7 @@ void LeInfo( tok tag, Cenario *hcenario, Camara *hcamara, int hlinhas, int hcolu
   Esfera *esf1;
   Cilindro *cil1;
   Cone *cone1;
+  Torus *torus1;
   CaixaParalela *cxp1;
   Triangulo *tri1;
 
@@ -159,14 +163,22 @@ void LeInfo( tok tag, Cenario *hcenario, Camara *hcamara, int hlinhas, int hcolu
       hcenario->InsereObjeto( esf1 );
       return;
     case tok_CYLINDER:
-        linha >> a >> p;
-        linha >> e;      //Raio
-        linha >> h;     //altura
-        p1 = LePonto(linha); //Centro
-        cil1 = new Cilindro( a, e, h, p1 );
-        hcenario->InsereObjeto( cil1 );
-        return;
-  case tok_CONE:
+      linha >> a >> p;
+      linha >> e;      //Raio
+      linha >> h;     //altura
+      p1 = LePonto(linha); //Centro
+      cil1 = new Cilindro( a, e, h, p1 );
+      hcenario->InsereObjeto( cil1 );
+      return;
+    case tok_TORUS:
+      linha >> a >> p;
+      linha >> e;      //Raio do Anel
+      linha >> h;      //Raio do Tubo
+      p1 = LePonto(linha); //Centro
+      torus1 = new Torus( a, e, h, p1 );
+      hcenario->InsereObjeto( torus1 );
+      return;
+    case tok_CONE:
       linha >> a >> p;
       linha >> e;      //Raio
       linha >> h;     //altura

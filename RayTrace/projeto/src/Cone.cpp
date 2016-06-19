@@ -22,11 +22,12 @@ Intersection Cone::Intercepta(const Raio& r_vis, IntersectionMode mode, float th
   //calculo dos limites superior e inferior do Cone
   hmin = centro.Y()-(altura/2);
   hmax = centro.Y()+(altura/2);
-  h = r_vis.Y0() - hmin;
+  h = (hmax - r_vis.Y0());
+
   tg = raio/altura;
 
   // montando a equação do 2º grau at2 + bt + c = 0
-  a = (r_vis.Dx()*r_vis.Dx())+(r_vis.Dz()*r_vis.Dz())-((tg*tg)*(r_vis.Dy()*r_vis.Dy()));
+  a = (r_vis.Dx()*r_vis.Dx()) + (r_vis.Dz()*r_vis.Dz()) - ((tg*tg)*(r_vis.Dy()*r_vis.Dy()));
   b = 2*( (K.X()*r_vis.Dx()) + (K.Z()*r_vis.Dz()) + ((tg*tg)*h*r_vis.Dy()) );
   c = ( (K.X()*K.X()) + (K.Z()*K.Z()) - ((tg*tg)*(h*h)) );
 
@@ -35,8 +36,8 @@ Intersection Cone::Intercepta(const Raio& r_vis, IntersectionMode mode, float th
   if (delta >= 0) {
       t1=(-b - sqrt(delta)) / (2*a);
       t2=(-b + sqrt(delta)) / (2*a);
-      y1=K.Y()+t1*r_vis.Dy();
-      y2=K.Y()+t2*r_vis.Dy();
+      y1=r_vis.Y0()+t1*r_vis.Dy();
+      y2=r_vis.Y0()+t2*r_vis.Dy();
       if(((y1>hmin)&&(y1<hmax))&&((y2<hmin)||(y2>hmax))){
         intersection = Intersection(this, t1);
       } else if(((y1<hmin)||(y1>hmax))&&((y2>hmin)&&(y2<hmax))){
@@ -55,15 +56,16 @@ Vetor_3D Cone::normal( const Ponto_3D& ponto ) const
 {
     Vetor_3D tmp;
     Vetor_3D centroNaAlturaDoPonto =  Vetor_3D(centro.X(), ponto.Y(), centro.Z());
-//    Vetor_3D k;
-//    float angulo = atan(raio/altura);
+    Vetor_3D k;
+    float angulo = atan(raio/altura);
 
     tmp = ponto - centroNaAlturaDoPonto;
+
+//    k = tmp.produtoVetorial(centroNaAlturaDoPonto);
+//    k.normaliza();
+
+//    tmp = tmp*cos(angulo) + (k.produtoVetorial(tmp))*sin(angulo) + k*(k.produtoEscalar(tmp))*(1 - cos(-angulo));
     tmp.normaliza();
-
-//    k = -tmp.produtoVetorial(centroNaAlturaDoPonto);
-
-//    tmp = tmp*cos(angulo) + (k.produtoVetorial(tmp))*sin(angulo) + k*(k.produtoEscalar(tmp))*(1 - cos(angulo));
 
     return tmp;
 }

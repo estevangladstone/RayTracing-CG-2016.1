@@ -80,7 +80,9 @@ HEADERS += src/camara.h \
     src/intersection.h \
     src/Luz.h \
     src/Cilindro.h \
-    src/Cone.h
+    src/Cone.h \
+    src/Torus.h \
+    src/poly34.h
 
 # Arquivos .cpp
 SOURCES += src/camara.cpp \
@@ -109,7 +111,9 @@ SOURCES += src/camara.cpp \
     src/Plano.cpp \
     src/Luz.cpp \
     src/Cilindro.cpp \
-    src/Cone.cpp
+    src/Cone.cpp \
+    src/Torus.cpp \
+    src/poly34.cpp
 
 # Arquivos dos resources (imagens por exemplo)
 RESOURCES += raytrace.qrc

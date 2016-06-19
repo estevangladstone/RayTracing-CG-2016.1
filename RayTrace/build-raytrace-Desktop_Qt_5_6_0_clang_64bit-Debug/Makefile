@@ -74,7 +74,9 @@ SOURCES       = ../projeto/src/camara.cpp \
 		../projeto/src/Plano.cpp \
 		../projeto/src/Luz.cpp \
 		../projeto/src/Cilindro.cpp \
-		../projeto/src/Cone.cpp tmp/qrc_raytrace.cpp \
+		../projeto/src/Cone.cpp \
+		../projeto/src/Torus.cpp \
+		../projeto/src/poly34.cpp tmp/qrc_raytrace.cpp \
 		tmp/moc_Trab3FT.cpp \
 		tmp/moc_PlyParser.cpp \
 		tmp/moc_MainWindow.cpp \
@@ -108,6 +110,8 @@ OBJECTS       = tmp/camara.o \
 		tmp/Luz.o \
 		tmp/Cilindro.o \
 		tmp/Cone.o \
+		tmp/Torus.o \
+		tmp/poly34.o \
 		tmp/qrc_raytrace.o \
 		tmp/moc_Trab3FT.o \
 		tmp/moc_PlyParser.o \
@@ -238,6 +242,7 @@ DIST          = /Users/Clay/Qt/5.6/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/qt_config.prf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/spec_post.prf \
+		../projeto/.qmake.stash \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/default_pre.prf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -289,7 +294,9 @@ DIST          = /Users/Clay/Qt/5.6/clang_64/mkspecs/features/spec_pre.prf \
 		../projeto/src/intersection.h \
 		../projeto/src/Luz.h \
 		../projeto/src/Cilindro.h \
-		../projeto/src/Cone.h ../projeto/src/camara.cpp \
+		../projeto/src/Cone.h \
+		../projeto/src/Torus.h \
+		../projeto/src/poly34.h ../projeto/src/camara.cpp \
 		../projeto/src/CaixaParalela.cpp \
 		../projeto/src/PlanoX.cpp \
 		../projeto/src/PlanoY.cpp \
@@ -315,7 +322,9 @@ DIST          = /Users/Clay/Qt/5.6/clang_64/mkspecs/features/spec_pre.prf \
 		../projeto/src/Plano.cpp \
 		../projeto/src/Luz.cpp \
 		../projeto/src/Cilindro.cpp \
-		../projeto/src/Cone.cpp
+		../projeto/src/Cone.cpp \
+		../projeto/src/Torus.cpp \
+		../projeto/src/poly34.cpp
 QMAKE_TARGET  = raytrace
 DESTDIR       = bin/
 TARGET        = bin/raytrace.app/Contents/MacOS/raytrace
@@ -451,6 +460,7 @@ Makefile: ../projeto/raytrace.pro /Users/Clay/Qt/5.6/clang_64/mkspecs/macx-clang
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/qt_config.prf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/default_pre.prf \
 		/Users/Clay/Qt/5.6/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -604,6 +614,7 @@ Makefile: ../projeto/raytrace.pro /Users/Clay/Qt/5.6/clang_64/mkspecs/macx-clang
 /Users/Clay/Qt/5.6/clang_64/mkspecs/features/qt_config.prf:
 /Users/Clay/Qt/5.6/clang_64/mkspecs/macx-clang/qmake.conf:
 /Users/Clay/Qt/5.6/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /Users/Clay/Qt/5.6/clang_64/mkspecs/features/exclusive_builds.prf:
 /Users/Clay/Qt/5.6/clang_64/mkspecs/features/default_pre.prf:
 /Users/Clay/Qt/5.6/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -663,8 +674,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../projeto/raytrace.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../projeto/src/camara.h ../projeto/src/CaixaParalela.h ../projeto/src/PlanoX.h ../projeto/src/PlanoY.h ../projeto/src/PlanoZ.h ../projeto/src/Raio.h ../projeto/src/Vetor_3d.h ../projeto/src/Cor_rgb.h ../projeto/src/Objeto_3d.h ../projeto/src/Esfera.h ../projeto/src/Triangulo.h ../projeto/src/Plano.h ../projeto/src/cenario.h ../projeto/src/io.h ../projeto/src/material.h ../projeto/src/Trab3FT.h ../projeto/src/PlyParser.h ../projeto/src/MainWindow.h ../projeto/src/RenderPanel.h ../projeto/src/Render.h ../projeto/src/CommandQueue.h ../projeto/src/TriangleMesh.h ../projeto/src/Ponto_3D.h ../projeto/src/TexturePoint.h ../projeto/src/intersection.h ../projeto/src/Luz.h ../projeto/src/Cilindro.h ../projeto/src/Cone.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../projeto/src/camara.cpp ../projeto/src/CaixaParalela.cpp ../projeto/src/PlanoX.cpp ../projeto/src/PlanoY.cpp ../projeto/src/PlanoZ.cpp ../projeto/src/Raio.cpp ../projeto/src/Vetor_3d.cpp ../projeto/src/Cor_rgb.cpp ../projeto/src/Esfera.cpp ../projeto/src/Triangulo.cpp ../projeto/src/cenario.cpp ../projeto/src/io.cpp ../projeto/src/material.cpp ../projeto/src/Trab3FT.cpp ../projeto/src/PlyParser.cpp ../projeto/src/MainWindow.cpp ../projeto/src/RenderPanel.cpp ../projeto/src/Render.cpp ../projeto/src/CommandQueue.cpp ../projeto/src/TriangleMesh.cpp ../projeto/src/TexturePoint.cpp ../projeto/src/intersection.cpp ../projeto/src/Objeto_3d.cpp ../projeto/src/Plano.cpp ../projeto/src/Luz.cpp ../projeto/src/Cilindro.cpp ../projeto/src/Cone.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../projeto/src/camara.h ../projeto/src/CaixaParalela.h ../projeto/src/PlanoX.h ../projeto/src/PlanoY.h ../projeto/src/PlanoZ.h ../projeto/src/Raio.h ../projeto/src/Vetor_3d.h ../projeto/src/Cor_rgb.h ../projeto/src/Objeto_3d.h ../projeto/src/Esfera.h ../projeto/src/Triangulo.h ../projeto/src/Plano.h ../projeto/src/cenario.h ../projeto/src/io.h ../projeto/src/material.h ../projeto/src/Trab3FT.h ../projeto/src/PlyParser.h ../projeto/src/MainWindow.h ../projeto/src/RenderPanel.h ../projeto/src/Render.h ../projeto/src/CommandQueue.h ../projeto/src/TriangleMesh.h ../projeto/src/Ponto_3D.h ../projeto/src/TexturePoint.h ../projeto/src/intersection.h ../projeto/src/Luz.h ../projeto/src/Cilindro.h ../projeto/src/Cone.h ../projeto/src/Torus.h ../projeto/src/poly34.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../projeto/src/camara.cpp ../projeto/src/CaixaParalela.cpp ../projeto/src/PlanoX.cpp ../projeto/src/PlanoY.cpp ../projeto/src/PlanoZ.cpp ../projeto/src/Raio.cpp ../projeto/src/Vetor_3d.cpp ../projeto/src/Cor_rgb.cpp ../projeto/src/Esfera.cpp ../projeto/src/Triangulo.cpp ../projeto/src/cenario.cpp ../projeto/src/io.cpp ../projeto/src/material.cpp ../projeto/src/Trab3FT.cpp ../projeto/src/PlyParser.cpp ../projeto/src/MainWindow.cpp ../projeto/src/RenderPanel.cpp ../projeto/src/Render.cpp ../projeto/src/CommandQueue.cpp ../projeto/src/TriangleMesh.cpp ../projeto/src/TexturePoint.cpp ../projeto/src/intersection.cpp ../projeto/src/Objeto_3d.cpp ../projeto/src/Plano.cpp ../projeto/src/Luz.cpp ../projeto/src/Cilindro.cpp ../projeto/src/Cone.cpp ../projeto/src/Torus.cpp ../projeto/src/poly34.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1482,7 +1493,8 @@ tmp/io.o: ../projeto/src/io.cpp /Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework
 		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/qdir.h \
 		../projeto/src/TriangleMesh.h \
 		../projeto/src/cilindro.h \
-		../projeto/src/cone.h
+		../projeto/src/cone.h \
+		../projeto/src/Torus.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/io.o ../projeto/src/io.cpp
 
 tmp/material.o: ../projeto/src/material.cpp ../projeto/src/material.h \
@@ -2359,6 +2371,23 @@ tmp/Cone.o: ../projeto/src/Cone.cpp ../projeto/src/Cone.h \
 		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/QtAlgorithms \
 		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/qalgorithms.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/Cone.o ../projeto/src/Cone.cpp
+
+tmp/Torus.o: ../projeto/src/Torus.cpp ../projeto/src/Torus.h \
+		../projeto/src/Objeto_3d.h \
+		../projeto/src/Raio.h \
+		../projeto/src/Ponto_3D.h \
+		../projeto/src/Vetor_3d.h \
+		../projeto/src/TexturePoint.h \
+		../projeto/src/intersection.h \
+		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/QDebug \
+		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/QtAlgorithms \
+		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/qalgorithms.h \
+		../projeto/src/poly34.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/Torus.o ../projeto/src/Torus.cpp
+
+tmp/poly34.o: ../projeto/src/poly34.cpp ../projeto/src/poly34.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/poly34.o ../projeto/src/poly34.cpp
 
 tmp/qrc_raytrace.o: tmp/qrc_raytrace.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/qrc_raytrace.o tmp/qrc_raytrace.cpp
