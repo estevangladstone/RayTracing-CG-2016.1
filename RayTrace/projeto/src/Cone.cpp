@@ -8,7 +8,6 @@ Cone::Cone(int _indice_textura, float _raio, float _altura, const Ponto_3D& _cen
   centro =  _centro;
 }
 
-
 Intersection Cone::Intercepta(const Raio& r_vis, IntersectionMode mode, float threshold)
 {
   double a, b, c, delta, hmin, hmax, t1, t2, y1, y2, h, tg;
@@ -19,11 +18,12 @@ Intersection Cone::Intercepta(const Raio& r_vis, IntersectionMode mode, float th
                         r_vis.Y0() - centro.Y(),
                         r_vis.Z0() - centro.Z());
 
-  //calculo dos limites superior e inferior do Cone
+  // Calculo dos limites superior e inferior do Cone
   hmin = centro.Y()-(altura/2);
   hmax = centro.Y()+(altura/2);
-  h = (hmax - r_vis.Y0());
 
+  // Calculos auxiliares para montar a equacao de intersecao
+  h = (hmax - r_vis.Y0());
   tg = raio/altura;
 
   // montando a equação do 2º grau at2 + bt + c = 0
@@ -84,39 +84,4 @@ TexturePoint Cone::pontoTextura(const Ponto_3D& ponto) const
     v = 1 - ((ponto.Y() - (centro.Y() - (altura/2))) / altura);
 
     return TexturePoint(u, v);
-
-    //    float u, v, c;
-//        float hmin=centro.Y()-altura/2;
-//        float hmax=centro.Y()+altura/2;
-//        Vetor_3D tmp(ponto - centro);
-//        float angulo = atanf(tmp.Z()/fabs(tmp.X()));
-
-//        tmp.normaliza();
-
-//        //u  = (acosf((tmp.X()/raio)-angulo))/(2*M_PI);
-//        //    phi  = acosf(tmp.Y());
-//        //    theta = acosf(tmp.X()/sin(phi));
-//        c=raio*angulo;
-//        u = c/(2*M_PI*raio);
-//        v = (tmp.Y()-hmin)/altura;
-
-//        return TexturePoint(u, v);
-
-
-    //    float phi, theta;
-    //    Vetor_3D tmp(ponto - centro);
-
-    //    tmp.normaliza();
-
-    //    phi  = acosf(tmp.Y());
-    //    theta = acosf(tmp.X()/sin(phi));
-
-    //    return TexturePoint((phi/M_PI), ((theta)/M_PI));
-
-
-
-    //    float hmin=centro.Y()-altura/2;
-    //    float hmax=centro.Y()+altura/2;
-    //    return TexturePoint( (ponto.Y()-hmin)/(altura) ,
-    //                         (ponto.Z()-hmin)/(altura) );
 }

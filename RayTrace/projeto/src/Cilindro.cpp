@@ -11,14 +11,13 @@ Cilindro::Cilindro(int _indice_textura, float _raio, float _altura, const Ponto_
 
 Intersection Cilindro::Intercepta(const Raio& r_vis, IntersectionMode mode, float threshold)
 {
-  float a, b, c, delta, hmin, hmax, t1, t2, y1, y2;
+  double a, b, c, delta, hmin, hmax, t1, t2, y1, y2;
   Intersection intersection;
 
   // valores intermediários
   Vetor_3D K = Vetor_3D(r_vis.X0() - centro.X(),
                         r_vis.Y0() - centro.Y(),
                         r_vis.Z0() - centro.Z());
-
 
   //calcula dos limites superior e inferior do cilindro
   hmin=centro.Y()-altura/2;
@@ -31,32 +30,65 @@ Intersection Cilindro::Intercepta(const Raio& r_vis, IntersectionMode mode, floa
 
   delta = b*b - 4*a*c;
 
-
   if (delta >= 0) {
       t1=(-b - sqrt(delta)) /(2*a);
       t2=(-b + sqrt(delta)) /(2*a);
+
+      // Forca que t1 <= t2
+      if(t1 < t2){
+          double aux = t1;
+          t1 = t2;
+          t2 = aux;
+      }
       y1=K.Y()+t1*r_vis.Dy();
       y2=K.Y()+t2*r_vis.Dy();
-      if(((y1>hmin)&&(y1<hmax))&&((y2<hmin)||(y2>hmax))){
-        intersection = Intersection(this, t1);
-      } else if(((y1<hmin)||(y1>hmax))&&((y2>hmin)&&(y2<hmax))){
-        intersection = Intersection(this, t2);
-      } else if (((y1>hmin)&&(y1<hmax))&&((y2>hmin)&&(y2<hmax))){
+
+      if (y1 < hmin){
+          if (y2 >= hmin){
+              // acerta a tampa
+              float th = t1 + (t2-t1) * (y1+(altura/2)) / (y1 - y2);
+              if (th > 0)
+                  intersection = Intersection::nearest(
+                              Intersection(this, t1),
+                              Intersection(this, t2),  threshold);
+          }
+      }
+      else if (y1 >= hmin && y1 <= hmax){
           intersection = Intersection::nearest(
                       Intersection(this, t1),
                       Intersection(this, t2),  threshold);
       }
-  }
+      else if (y1 > hmax){
+          if (y2 <= hmax){
+              // acerta a tampa
+              float th = t1 + (t2-t1) * (y1-(altura/2)) / (y1 - y2);
+              if (th > 0)
+                  intersection = Intersection::nearest(
+                              Intersection(this, t1),
+                              Intersection(this, t2),  threshold);
+          }
+      }
 
-  return intersection;
+      return intersection;
+
+    }
 }
 
 Vetor_3D Cilindro::normal( const Ponto_3D& ponto ) const
 {
-    Vetor_3D tmp(ponto - centro);
-    Vetor_3D centroNaAlturaDoPonto =  Vetor_3D(centro.X(), ponto.Y(), centro.Z());
+    Vetor_3D tmp, centroNaAlturaDoPonto;
+    double hmin, hmax;
 
-    tmp = ponto - centroNaAlturaDoPonto;
+    centroNaAlturaDoPonto =  Vetor_3D(centro.X(), ponto.Y(), centro.Z());
+//    hmin=centro.Y()-(altura/2);
+//    hmax=centro.Y()+(altura/2);
+
+//    if(ponto.Y() >= hmax || ponto.Y() <= hmin){
+//        tmp = centroNaAlturaDoPonto;
+//    } else {
+        tmp = ponto - centroNaAlturaDoPonto;
+//    }
+
     tmp.normaliza();
 
     return tmp;
@@ -64,48 +96,20 @@ Vetor_3D Cilindro::normal( const Ponto_3D& ponto ) const
 
 TexturePoint Cilindro::pontoTextura(const Ponto_3D& ponto) const
 {
-    double u, v, a, b;
+    double u, v, a, b, hmin, hmax;
 
     a = 0;
     b = M_PI;
+    hmin=centro.Y()-altura/2;
+    hmax=centro.Y()+altura/2;
 
-    u = 1 - (acosf((ponto.X() - centro.X()) / ((raio)) - a)/(b - a));
-    v = 1 - ((ponto.Y() - (centro.Y() - (altura/2))) / altura);
+    if(ponto.Y() >= hmax || ponto.Y() <= hmin){
+        u = (ponto.X() - (centro.X() - raio)) / (raio*2);
+        v = (ponto.Z() - (centro.Z() + raio)) / (raio*2);
+    } else {
+        u = 1 - (acosf((ponto.X() - centro.X()) / ((raio)) - a)/(b - a));
+        v = 1 - ((ponto.Y() - (centro.Y() - (altura/2))) / altura);
+    }
 
     return TexturePoint(u, v);
-
-    //    float u, v, c;
-//        float hmin=centro.Y()-altura/2;
-//        float hmax=centro.Y()+altura/2;
-//        Vetor_3D tmp(ponto - centro);
-//        float angulo = atanf(tmp.Z()/tmp.X());
-
-//        tmp.normaliza();
-
-//        //u  = (acosf((tmp.X()/raio)-angulo))/(2*M_PI);
-//        //    phi  = acosf(tmp.Y());
-//        //    theta = acosf(tmp.X()/sin(phi));
-//        c=raio*angulo;
-//        u = c/(2*M_PI*raio);
-//        v = (tmp.Y()-hmin)/altura;
-
-//        return TexturePoint(u, v);
-
-
-    //    float phi, theta;
-    //    Vetor_3D tmp(ponto - centro);
-
-    //    tmp.normaliza();
-
-    //    phi  = acosf(tmp.Y());
-    //    theta = acosf(tmp.X()/sin(phi));
-
-    //    return TexturePoint((phi/M_PI), ((theta)/M_PI));
-
-
-
-    //    float hmin=centro.Y()-altura/2;
-    //    float hmax=centro.Y()+altura/2;
-    //    return TexturePoint( (ponto.Y()-hmin)/(altura) ,
-    //                         (ponto.Z()-hmin)/(altura) );
 }

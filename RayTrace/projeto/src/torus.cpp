@@ -11,8 +11,9 @@ Torus::Torus(int _indice_textura, float _raioDoAnel, float _raioDoTubo, const Po
 
 Intersection Torus::Intercepta(const Raio& r_vis, IntersectionMode mode, float threshold)
 {
-  float a, b, c, d, e, hmin, hmax;
-  float Dx, Dy, Dz, Px, Py, Pz, R, r;
+  double a, b, c, d, e, hmin, hmax, fa, fb, fc, fd, fe;
+  double Dx, Dy, Dz, Px, Py, Pz, R, r;
+  double y1, y2, y3, y4;
   int numRaizes;
   double x[4];
   Vetor_3D D, P;
@@ -33,36 +34,60 @@ Intersection Torus::Intercepta(const Raio& r_vis, IntersectionMode mode, float t
   Py = r_vis.Y0();
   Pz = r_vis.Z0();
 
-  a = (D.produtoEscalar(D)*D.produtoEscalar(D)) + 2*(Dx*Dx*Dy*Dy + Dx*Dx*Dz*Dz + Dz*Dz*Dy*Dy);
-  b = 4*((D.produtoEscalar(D)*D.produtoEscalar(D)) + Dx*Dx*Dy*Py + Dx*Dx*Dz*Pz + Dy*Dy*Dx*Px + Dy*Dy*Dz*Pz + Dz*Dz*Dx*Px + Dz*Dz*Dy*Py);
-  c = 2*( ((R*R)*(Dz*Dz - Dx*Dx - Dy*Dy)) - ((r*r)*D.produtoEscalar(P)) + 3*(D.produtoEscalar(D)*P.produtoEscalar(P)) + 4*(Dx*Px*Dy*Py + Dx*Px*Dz*Pz + Dy*Py*Dz*Pz) + (Px*Px*Dy*Dy + Dx*Dx*Py*Py + Px*Px*Dz*Dz + Py*Py*Dz*Dz + Pz*Pz*Dx*Dx + Dy*Dy*Pz*Pz) );
-  d = 4*( ((R*R)*(Dz*Pz - Dx*Px - Dy*Py)) - ((r*r)*D.produtoEscalar(P)) + ((D.produtoEscalar(P)*P.produtoEscalar(P)) + ((Px*Px*Dy*Py) + (Py*Py*Dx*Px) + (Px*Px*Dz*Pz) + (Py*Py*Dz*Pz) + (Pz*Pz*Dx*Px) + (Pz*Pz*Dy*Py))) );
-  e = (R*R*R*R) + (r*r*r*r) + 2*(Px*Px*Py*Py + Px*Px*Pz*Pz + Pz*Pz*Py*Py) + (P.produtoEscalar(P)*P.produtoEscalar(P)) + 2*R*R*(Pz*Pz - Px*Px - Py*Py) - 2*r*r*(R*R + P.produtoEscalar(P));
+//  a = (D.produtoEscalar(D)*D.produtoEscalar(D)) + 2*(Dx*Dx*Dy*Dy + Dx*Dx*Dz*Dz + Dz*Dz*Dy*Dy);
+//  b = 4*((D.produtoEscalar(D)*D.produtoEscalar(D)) + Dx*Dx*Dy*Py + Dx*Dx*Dz*Pz + Dy*Dy*Dx*Px + Dy*Dy*Dz*Pz + Dz*Dz*Dx*Px + Dz*Dz*Dy*Py);
+//  c = 2*( ((R*R)*(Dz*Dz - Dx*Dx - Dy*Dy)) - ((r*r)*D.produtoEscalar(P)) + 3*(D.produtoEscalar(D)*P.produtoEscalar(P)) + 4*(Dx*Px*Dy*Py + Dx*Px*Dz*Pz + Dy*Py*Dz*Pz) + (Px*Px*Dy*Dy + Dx*Dx*Py*Py + Px*Px*Dz*Dz + Py*Py*Dz*Dz + Pz*Pz*Dx*Dx + Dy*Dy*Pz*Pz) );
+//  d = 4*( ((R*R)*(Dz*Pz - Dx*Px - Dy*Py)) - ((r*r)*D.produtoEscalar(P)) + ((D.produtoEscalar(P)*P.produtoEscalar(P)) + ((Px*Px*Dy*Py) + (Py*Py*Dx*Px) + (Px*Px*Dz*Pz) + (Py*Py*Dz*Pz) + (Pz*Pz*Dx*Px) + (Pz*Pz*Dy*Py))) );
+//  e = (R*R*R*R) + (r*r*r*r) + 2*(Px*Px*Py*Py + Px*Px*Pz*Pz + Pz*Pz*Py*Py) + (P.produtoEscalar(P)*P.produtoEscalar(P)) + 2*R*R*(Pz*Pz - Px*Px - Py*Py) - 2*r*r*(R*R + P.produtoEscalar(P));
+
+//    fa = D.produtoEscalar(D);
+//    fb = D.produtoEscalar(P);
+//    fc = P.produtoEscalar(P);
+//    fd = (fc + R*R - r*r);
+//    fe = (fc - R*R - r*r);
+
+//    a = fa*fa;
+//    b = 4*fa*fb;
+//    c = (2*fa*fd) - (4*R*R*(Dx*Dx + Dy*Dy)) + (4*fb*fb);
+//    d = (8*R*R*Dz*Dz) + (4*fb*fe);
+//    e = (fa*fa) + ( (R*R - r*r)*(R*R - r*r) + 2*( Dx*Dx*Dy*Dy + Dz*Dz*(R*R - r*r) + ((Dx*Dx + Dy*Dy)*(Dz*Dz - R*R - r*r)) ) );
+
+  a = (1/(4*R*R))*(D.produtoEscalar(D)*D.produtoEscalar(D) + 2*(Dx*Dx*Dy*Dy + Dx*Dx*Dz*Dz + Dz*Dz*Dy*Dy));
+  b = (1/(4*R*R))*(P.produtoEscalar(D)*D.produtoEscalar(D) + (Px*Dx*Dy*Dy + Py*Dy*Dx*Dx + Px*Dx*Dz*Dz + Pz*Dz*Dx*Dx + Pz*Dz*Dy*Dy + Py*Dy*Dz*Dz));
+  c = -(Dx*Dx + Dy*Dy) + ((P.produtoEscalar(P)*D.produtoEscalar(D))*(3/(2*R*R))) + (((1/2) - ((r*r)/(2*R*R)))*(D.produtoEscalar(D))) + ( (1/(4*R*R))*(Px*Px*Dy*Dy + 4*Px*Dx*Py*Dy + Py*Py*Dx*Dx + Px*Px*Dz*Dz + 4*Px*Dx*Pz*Dz + Py*Py*Dz*Dz + Pz*Pz*Dy*Dy + 4*Pz*Dz*Py*Dy + Py*Py*Dz*Dz) );
+  d = -(2*Px*Dx + 2*Py*Dy) + (((1/2) - ((r*r)/(2*R*R)))*(P.produtoEscalar(D)*2)) + ((1/(2*R*R))*(Px*Px*Py*Dy + Py*Py*Px*Dx + Px*Px*Pz*Dz + Pz*Pz*Px*Dx + Pz*Pz*Py*Dy + Py*Py*Pz*Dz)) + ((1/(R*R))*(P.produtoEscalar(P)*P.produtoEscalar(D)));
+  e = (1/(4*R*R))*( P.produtoEscalar(P)*P.produtoEscalar(P) + (Px*Px*Py*Py + Px*Px*Pz*Pz + Pz*Pz*Py*Py) ) + ((1/2) - ((r*r)/(2*R*R)))*(P.produtoEscalar(P)) + ( ((r*r)/(4*R*R)) + ((r*r)/2) + ((R*R)/4) ) - (Px*Px + Py*Py);
 
   // Encontra as raizes do polinomio de grau quatro
-      b = b/a;
-      c = c/a;
-      d = d/a;
-      e = e/a;
-      numRaizes = SolveP4(x, b, c, d, e);
-      if(numRaizes > 0){
-         if(numRaizes == 4){
-               i1 = Intersection::nearest(
+  if(a != 0){
+     b = b/a;
+     c = c/a;
+     d = d/a;
+     e = e/a;
+     numRaizes = SolveP4(x, b, c, d, e);
+     if(numRaizes == 4){
+         y1 = r_vis.Y0() + r_vis.Dy()*x[0];
+         y2 = r_vis.Y0() + r_vis.Dy()*x[1];
+         y3 = r_vis.Y0() + r_vis.Dy()*x[2];
+         y4 = r_vis.Y0() + r_vis.Dy()*x[3];
+             i1 = Intersection::nearest(
+                         Intersection(this, x[0]),
+                         Intersection(this, x[1]),  threshold);
+             i2 = Intersection::nearest(
+                         Intersection(this, x[2]),
+                         Intersection(this, x[3]),  threshold);
+             intersection = Intersection::nearest(
+                         i1,
+                         i2,  threshold);
+     }
+     else if(numRaizes == 2){
+         y1 = r_vis.Y0() + r_vis.Dy()*x[0];
+         y2 = r_vis.Y0() + r_vis.Dy()*x[1];
+             intersection = Intersection::nearest(
                            Intersection(this, x[0]),
                            Intersection(this, x[1]),  threshold);
-               i2 = Intersection::nearest(
-                           Intersection(this, x[2]),
-                           Intersection(this, x[3]),  threshold);
-               intersection = Intersection::nearest(
-                           i1,
-                           i2,  threshold);
-         }
-         else{
-               intersection = Intersection::nearest(
-                           Intersection(this, x[0]),
-                           Intersection(this, x[1]),  threshold);
-         }
-      }
+     }
+  }
 
   return intersection;
 }

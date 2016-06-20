@@ -2346,7 +2346,7 @@ tmp/Luz.o: ../projeto/src/Luz.cpp ../projeto/src/Luz.h \
 		/Users/Clay/Qt/5.6/clang_64/lib/QtGui.framework/Headers/qcolor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/Luz.o ../projeto/src/Luz.cpp
 
-tmp/Cilindro.o: ../projeto/src/Cilindro.cpp ../projeto/src/Cilindro.h \
+tmp/Cilindro.o: ../projeto/src/Cilindro.cpp ../projeto/src/cilindro.h \
 		../projeto/src/Objeto_3d.h \
 		../projeto/src/Raio.h \
 		../projeto/src/Ponto_3D.h \
@@ -2383,7 +2383,7 @@ tmp/Torus.o: ../projeto/src/Torus.cpp ../projeto/src/Torus.h \
 		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/qdebug.h \
 		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/QtAlgorithms \
 		/Users/Clay/Qt/5.6/clang_64/lib/QtCore.framework/Headers/qalgorithms.h \
-		../projeto/src/poly34.h
+		../projeto/src/Poly34.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/Torus.o ../projeto/src/Torus.cpp
 
 tmp/poly34.o: ../projeto/src/poly34.cpp ../projeto/src/poly34.h
